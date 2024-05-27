@@ -24,6 +24,7 @@
         <springdoc-openapi-starter-webmvc-ui.version>2.3.0</springdoc-openapi-starter-webmvc-ui.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <spring-cloud-starter-openfeign.version>4.1.1</spring-cloud-starter-openfeign.version>
+        <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
     </properties>
     <dependencies>
         <dependency>
@@ -140,6 +141,26 @@
                     <target>21</target>
                     <compilerArgs>--enable-preview</compilerArgs>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>${maven-antrun-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-jar-to-docker-dist</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <copy file="${project.build.directory}/${project.build.finalName}.jar"
+                                      tofile="docker/assignment-app/app.jar"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
